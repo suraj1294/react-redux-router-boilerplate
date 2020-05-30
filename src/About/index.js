@@ -1,26 +1,27 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { GET_ABOUT_DETAILS, getDetails }  from './store/actions/about.actions';
+import React from "react";
 
- class About extends Component {
-     componentDidMount(){
-         console.log('dispatching the action from about js')
-         this.props.getDetails();
-     }
- render() {
-     return <div>TEst</div>
- }
-    
-}
+import { useDispatch, useSelector } from "react-redux";
 
-const mapStateToProps = state => ({
-    list: state.details
-});
-const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({
-            getDetails:getDetails
-        }, dispatch);
-  }
+import {
+  /*GET_ABOUT_DETAILS,*/ getDetails,
+} from "./store/actions/about.actions";
 
-export default connect(mapStateToProps,mapDispatchToProps)(About);
+const About = () => {
+  const dispatch = useDispatch();
+  const store = useSelector((state) => state.aboutApp);
+
+  console.log(store);
+  return (
+    <div>
+      <button onClick={() => dispatch(getDetails())}>Get Details</button>
+      <div>Details:</div>
+      {store &&
+        store.details &&
+        store.details.map((detail) => {
+          return <div key={detail.id}> {detail.title} </div>;
+        })}
+    </div>
+  );
+};
+
+export default About;
